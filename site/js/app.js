@@ -1,7 +1,9 @@
 const STORAGE_KEY = "takken-studied-v1";
+const ATTEMPTS_KEY = "takken-attempts-v1";
 
 let bank = null;
 let studied = loadStudied();
+let attempts = loadAttempts();
 
 function loadStudied() {
   try {
@@ -13,6 +15,124 @@ function loadStudied() {
 
 function saveStudied() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify([...studied]));
+}
+
+function loadAttempts() {
+  try {
+    return JSON.parse(localStorage.getItem(ATTEMPTS_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function saveAttempts() {
+  localStorage.setItem(ATTEMPTS_KEY, JSON.stringify(attempts));
+}
+
+function renderQuestionBody(q) {
+  const hasChoices = q.choices && q.choices.length >= 2;
+  const prev = attempts[q.id];
+
+  let subsHtml = "";
+  if (q.subStatements && q.subStatements.length) {
+    subsHtml = `<div class="q-subs"><p class="q-subs-title">各記述（ア〜エ）</p><ol class="q-subs-list">`;
+    q.subStatements.forEach((s) => {
+      subsHtml += `<li><span class="sub-id">${escapeHtml(s.id)}</span> ${escapeHtml(s.text)}</li>`;
+    });
+    subsHtml += `</ol></div>`;
+  }
+
+  let choicesHtml = "";
+  if (hasChoices) {
+    choicesHtml = `<div class="q-choices" role="group" aria-label="選択肢">`;
+    q.choices.forEach((c) => {
+      let cls = "choice-btn";
+      if (prev && prev.selected === c.id) cls += prev.correct ? " selected-correct" : " selected-wrong";
+      if (prev && q.correctAnswer && c.id === q.correctAnswer) cls += " is-answer";
+      choicesHtml += `<button type="button" class="${cls}" data-choice="${c.id}" data-qid="${q.id}">
+        <span class="choice-num">${escapeHtml(c.id)}</span>
+        <span class="choice-text">${escapeHtml(c.text)}</span>
+      </button>`;
+    });
+    choicesHtml += `</div>`;
+  } else {
+    choicesHtml = `<div class="q-raw-fallback"><p class="warn">選択肢を自動分割できませんでした。原文を確認してください。</p><pre class="q-raw">${escapeHtml(q.text)}</pre></div>`;
+  }
+
+  let feedback = "";
+  if (prev) {
+    if (prev.correct) {
+      feedback = `<div class="q-feedback correct">✓ 正解です（正解: ${formatAnswer(q.correctAnswer)}）</div>`;
+    } else {
+      feedback = `<div class="q-feedback wrong">✗ 不正解です（正解: ${formatAnswer(q.correctAnswer)}）</div>`;
+    }
+  } else if (!q.correctAnswer && hasChoices) {
+    feedback = `<div class="q-feedback neutral">この年度は正解データがありません。公式PDFで確認してください。</div>`;
+  }
+
+  return `
+    <div class="q-stem">${escapeHtml(q.stem || q.text.slice(0, 300))}</div>
+    ${subsHtml}
+    ${choicesHtml}
+    ${feedback}
+    <details class="q-original"><summary>原文（OCR）を表示</summary><pre class="q-raw">${escapeHtml(q.text)}</pre></details>
+  `;
+}
+
+function formatAnswer(a) {
+  if (!a) return "—";
+  if (a === "none") return "なし（該当肢なし）";
+  if (a === "any") return "全選択肢正解（試験上の特例）";
+  return `選択肢 ${a}`;
+}
+
+function handleChoiceClick(btn) {
+  const qid = btn.dataset.qid;
+  const selected = btn.dataset.choice;
+  const q = bank.topics.flatMap((t) => t.questions).find((x) => x.id === qid);
+  if (!q) return;
+
+  const card = btn.closest(".question-card");
+  const correctAnswer = q.correctAnswer;
+  let correct = false;
+  if (correctAnswer === "any") correct = true;
+  else if (correctAnswer === "none") correct = selected === "none";
+  else if (correctAnswer) correct = selected === correctAnswer;
+
+  attempts[qid] = { selected, correct, at: Date.now() };
+  saveAttempts();
+
+  card.querySelectorAll(".choice-btn").forEach((b) => {
+    b.disabled = true;
+    b.classList.remove("selected-correct", "selected-wrong", "is-answer");
+    if (b.dataset.choice === selected) {
+      b.classList.add(correct ? "selected-correct" : "selected-wrong");
+    }
+    if (correctAnswer && b.dataset.choice === correctAnswer) {
+      b.classList.add("is-answer");
+    }
+    if (correctAnswer === "any") {
+      b.classList.add("is-answer");
+    }
+  });
+
+  let fb = card.querySelector(".q-feedback");
+  if (!fb) {
+    fb = document.createElement("div");
+    card.querySelector(".q-body").appendChild(fb);
+  }
+  fb.className = `q-feedback ${correct ? "correct" : "wrong"}`;
+  fb.textContent = correct
+    ? `✓ 正解です（正解: ${formatAnswer(correctAnswer)}）`
+    : `✗ 不正解です（正解: ${formatAnswer(correctAnswer)}）`;
+
+  if (!correctAnswer) {
+    fb.className = "q-feedback neutral";
+    fb.textContent = "正解データがありません。公式PDFで確認してください。";
+    card.querySelectorAll(".choice-btn").forEach((b) => {
+      b.disabled = false;
+    });
+  }
 }
 
 function escapeHtml(s) {
@@ -164,14 +284,15 @@ function renderTopic(topicId) {
   let questionsHtml = "";
   topic.questions.forEach((q, idx) => {
     const isDone = studied.has(q.id);
+    const openByDefault = idx < 3 ? " open" : "";
     questionsHtml += `
-      <div class="question-card ${isDone ? "done" : ""}" data-qid="${q.id}">
+      <div class="question-card${isDone ? " done" : ""}${openByDefault}" data-qid="${q.id}" data-exam="${q.exam}">
         <div class="q-head">
           <input type="checkbox" ${isDone ? "checked" : ""} data-check="${q.id}" aria-label="学習済み" />
           <span class="q-title">【${idx + 1}】${escapeHtml(q.examLabel)} 問${q.qnum}</span>
           <span class="q-toggle"></span>
         </div>
-        <div class="q-body">${escapeHtml(q.text)}</div>
+        <div class="q-body">${renderQuestionBody(q)}</div>
       </div>`;
   });
 
@@ -192,6 +313,7 @@ function renderTopic(topicId) {
     </div>
     <div class="panel">
       <h2>過去問一覧</h2>
+      <p class="quiz-hint">選択肢をタップすると正誤が表示されます。OCRの誤字は原文表示で確認してください。</p>
       <div class="question-filters">
         <label>年度 <select id="examFilter">
           <option value="">すべて</option>
@@ -262,8 +384,26 @@ function bindMainEvents(route) {
   document.querySelectorAll(".q-head").forEach((head) => {
     head.addEventListener("click", (e) => {
       if (e.target.type === "checkbox") return;
+      if (e.target.closest(".choice-btn")) return;
       head.closest(".question-card").classList.toggle("open");
     });
+  });
+
+  document.querySelectorAll(".choice-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (!btn.disabled) handleChoiceClick(btn);
+    });
+  });
+
+  // 復習時: 既に回答済みはボタン無効化
+  document.querySelectorAll(".question-card").forEach((card) => {
+    const qid = card.dataset.qid;
+    if (attempts[qid]) {
+      card.querySelectorAll(".choice-btn").forEach((b) => {
+        b.disabled = true;
+      });
+    }
   });
 
   document.querySelectorAll("[data-check]").forEach((cb) => {
@@ -282,11 +422,7 @@ function bindMainEvents(route) {
     examFilter.addEventListener("change", () => {
       const val = examFilter.value;
       document.querySelectorAll(".question-card").forEach((card) => {
-        const qid = card.dataset.qid;
-        const q = bank.topics
-          .flatMap((t) => t.questions)
-          .find((x) => x.id === qid);
-        card.classList.toggle("hidden", val && q?.exam !== val);
+        card.classList.toggle("hidden", val && card.dataset.exam !== val);
       });
     });
   }

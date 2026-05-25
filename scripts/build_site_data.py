@@ -16,8 +16,10 @@ from generate_problem_bank import (  # noqa: E402
     TOPICS,
     classify_question,
 )
+from parse_question import parse_question  # noqa: E402
 
 OUT = ROOT / "site" / "data" / "bank.json"
+ANSWERS_PATH = ROOT / "data" / "answers.json"
 
 
 def md_to_html(text: str) -> str:
@@ -48,9 +50,27 @@ def md_to_html(text: str) -> str:
     return "\n".join(html)
 
 
+def lookup_answer(answers_db: dict, exam: str, qnum: int):
+    exam_ans = answers_db.get(exam, {})
+    a = exam_ans.get(str(qnum))
+    if a in ("none", "なし"):
+        return "none"
+    if a in ("any", "all"):
+        return "any"
+    if a in ("1", "2", "3", "4"):
+        return a
+    return None
+
+
 def main():
     raw = json.loads(DATA.read_text(encoding="utf-8"))
+    answers_db = {}
+    if ANSWERS_PATH.exists():
+        answers_db = json.loads(ANSWERS_PATH.read_text(encoding="utf-8"))
+
     by_topic = defaultdict(list)
+    parsed_count = 0
+    answer_count = 0
 
     for ex in EXAM_ORDER:
         if ex not in raw:
@@ -58,12 +78,26 @@ def main():
         for qn, text in raw[ex]["questions"].items():
             tid = classify_question(qn, text)
             qid = f"{ex}_Q{qn}"
+            parsed = parse_question(text.strip())
+            correct = lookup_answer(answers_db, ex, int(qn))
+            # 令和4問48など「全解答正解」注記
+            if ex == "R4" and int(qn) == 48 and not correct:
+                correct = "any"
+            if parsed.get("choices"):
+                parsed_count += 1
+            if correct:
+                answer_count += 1
             by_topic[tid].append({
                 "id": qid,
                 "exam": ex,
                 "examLabel": EXAM_LABEL[ex],
                 "qnum": int(qn),
                 "text": text.strip(),
+                "stem": parsed["stem"],
+                "subStatements": parsed["subStatements"],
+                "choices": parsed["choices"],
+                "choiceType": parsed["choiceType"],
+                "correctAnswer": correct,
             })
 
     tier_info = {
@@ -140,6 +174,8 @@ def main():
             "examOrder": EXAM_ORDER,
             "examLabels": EXAM_LABEL,
             "tierInfo": tier_info,
+            "parsedWithChoices": parsed_count,
+            "withAnswers": answer_count,
         },
         "formulas": formulas,
         "topics": topics,
