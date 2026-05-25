@@ -17,6 +17,7 @@ from generate_problem_bank import (  # noqa: E402
     classify_question,
 )
 from parse_question import parse_question  # noqa: E402
+from generate_explanation import explanation_to_html, generate_explanation  # noqa: E402
 
 OUT = ROOT / "site" / "data" / "bank.json"
 ANSWERS_PATH = ROOT / "data" / "answers.json"
@@ -87,8 +88,16 @@ def main():
                 parsed_count += 1
             if correct:
                 answer_count += 1
+            topic_name = next(t[1] for t in TOPICS if t[0] == tid)
+            exp = generate_explanation(
+                {"stem": parsed["stem"], "text": text.strip(), "choices": parsed["choices"],
+                 "subStatements": parsed["subStatements"], "correctAnswer": correct},
+                tid,
+                topic_name,
+            )
             by_topic[tid].append({
                 "id": qid,
+                "topicId": tid,
                 "exam": ex,
                 "examLabel": EXAM_LABEL[ex],
                 "qnum": int(qn),
@@ -98,6 +107,7 @@ def main():
                 "choices": parsed["choices"],
                 "choiceType": parsed["choiceType"],
                 "correctAnswer": correct,
+                "explanationHtml": explanation_to_html(exp),
             })
 
     tier_info = {

@@ -29,7 +29,146 @@ function saveAttempts() {
   localStorage.setItem(ATTEMPTS_KEY, JSON.stringify(attempts));
 }
 
+const CHOICE_DIGIT_RE = /(?<![0-9０-９])(?<![条第年])([1-4１-４])/gu;
+const UNIT_AFTER = /^[月年日時分秒歳円万㎡％%\d]/;
+const STEM_END_RE = /(どれか|どれ|いくつ|一つ|組合せ|掲げ|ものは|ものを|記述のうち)[。．？！\s]*$/;
+
+function zenToInt(s) {
+  const map = { "０": 0, "１": 1, "２": 2, "３": 3, "４": 4 };
+  return map[s] ?? parseInt(s, 10);
+}
+
+function contentStart(raw, afterDigitEnd) {
+  let i = afterDigitEnd;
+  const skip = " ．.、-ー—'\"＇''「」[]】]";
+  while (i < raw.length && skip.includes(raw[i])) i++;
+  return i;
+}
+
+function isFalsePositive(raw, digitStart, cs) {
+  if (cs >= raw.length) return true;
+  if (UNIT_AFTER.test(raw.slice(cs))) return true;
+  const before = raw.slice(Math.max(0, digitStart - 4), digitStart);
+  return /[条第年]$/.test(before);
+}
+
+function collectChoiceCandidates(raw) {
+  const out = [];
+  CHOICE_DIGIT_RE.lastIndex = 0;
+  let m;
+  while ((m = CHOICE_DIGIT_RE.exec(raw)) !== null) {
+    const id = String(zenToInt(m[1]));
+    const digitStart = m.index;
+    const cs = contentStart(raw, m.index + m[1].length);
+    if (isFalsePositive(raw, digitStart, cs)) continue;
+    out.push({ id, markerStart: m.index, contentStart: cs });
+  }
+  return out;
+}
+
+function buildChoiceChain(candidates) {
+  if (!candidates.length) return [];
+  const order = ["1", "2", "3", "4"];
+  let startIdx = 0;
+  if (candidates[0].id !== "1") {
+    const idx = order.findIndex((w) => candidates.some((c) => c.id === w));
+    if (idx >= 0) startIdx = idx;
+  }
+  const chain = [];
+  let pos = 0;
+  for (const want of order.slice(startIdx)) {
+    const pick = candidates.find((c) => c.id === want && c.markerStart >= pos);
+    if (!pick) break;
+    chain.push(pick);
+    pos = pick.markerStart + 1;
+  }
+  return chain.length >= 2 ? chain : [];
+}
+
+function inferStemEnd(raw, firstMarker) {
+  const head = raw.slice(0, firstMarker);
+  const m = head.match(STEM_END_RE);
+  if (m) return m.index + m[0].length;
+  const lastPunc = head.search(/[。．？！](?=[^。．？！]*$)/);
+  return lastPunc >= 0 ? lastPunc + 1 : firstMarker;
+}
+
+function chainToChoices(raw, chain) {
+  const choices = [];
+  if (chain[0].id !== "1") {
+    const stemEnd = inferStemEnd(raw, chain[0].markerStart);
+    let c1 = raw.slice(stemEnd, chain[0].markerStart).trim().replace(/^[\]】\s]+/, "");
+    if (c1.length >= 4) choices.push({ id: "1", label: "1", text: c1 });
+  }
+  chain.forEach((node, i) => {
+    const end = i + 1 < chain.length ? chain[i + 1].markerStart : raw.length;
+    const ctext = raw.slice(node.contentStart, end).trim();
+    if (ctext.length >= 2 && !choices.some((c) => c.id === node.id)) {
+      choices.push({ id: node.id, label: node.id, text: ctext });
+    }
+  });
+  return choices.sort((a, b) => Number(a.id) - Number(b.id));
+}
+
+function extractSubStatements(raw) {
+  const subs = [];
+  const re = /([アイウエ])[　 ](.+?)(?=\s[アイウエ][　 ]|\s[1-4１-４][　 ]|$)/g;
+  let m;
+  while ((m = re.exec(raw)) !== null) {
+    subs.push({ id: m[1], text: m[2].trim() });
+  }
+  return subs;
+}
+
+/** 原文テキストから設問・選択肢を分割（Python版と同じロジック） */
+function parseQuestionText(text) {
+  const raw = text.replace(/\u3000/g, " ").replace(/\s+/g, " ").trim();
+  if (raw.length < 20) return { stem: raw, choices: [], subStatements: [] };
+
+  const subStatements = extractSubStatements(raw);
+  let region = raw;
+  if (subStatements.length) {
+    const last = subStatements[subStatements.length - 1];
+    const pos = raw.lastIndexOf(last.text);
+    if (pos >= 0) region = raw.slice(pos + last.text.length);
+  }
+
+  let chain = buildChoiceChain(collectChoiceCandidates(region));
+  let choices = chainToChoices(region, chain);
+  if (choices.length < 2) {
+    chain = buildChoiceChain(collectChoiceCandidates(raw));
+    choices = chainToChoices(raw, chain);
+  }
+
+  let stem = raw;
+  if (choices.length >= 2 && chain.length) {
+    const cut =
+      chain[0].id !== "1" ? inferStemEnd(raw, chain[0].markerStart) : chain[0].markerStart;
+    if (subStatements.length) {
+      const m1 = raw.indexOf(subStatements[0].id + " ");
+      stem = m1 > 0 ? raw.slice(0, m1).trim() : raw.slice(0, cut).trim();
+    } else {
+      stem = raw.slice(0, cut).trim();
+    }
+  }
+  if (!stem) stem = raw.slice(0, 400);
+
+  return { stem, choices, subStatements };
+}
+
+function ensureQuestionParsed(q) {
+  if (!q.text) return q;
+  const parsed = parseQuestionText(q.text);
+  if (parsed.choices.length >= 2) {
+    q.stem = parsed.stem;
+    q.choices = parsed.choices;
+    if (parsed.subStatements.length) q.subStatements = parsed.subStatements;
+  }
+  return q;
+}
+
 function renderQuestionBody(q) {
+  q = ensureQuestionParsed({ ...q });
   const hasChoices = q.choices && q.choices.length >= 2;
   const prev = attempts[q.id];
 
@@ -60,6 +199,10 @@ function renderQuestionBody(q) {
   }
 
   let feedback = "";
+  const showExplanation = prev && q.explanationHtml;
+  const explanationBlock = q.explanationHtml
+    ? `<div class="q-explanation${showExplanation ? " visible" : ""}" ${showExplanation ? "" : 'hidden'}>${showExplanation ? q.explanationHtml : "解答後に解説が表示されます"}</div>`
+    : "";
   if (prev) {
     if (prev.correct) {
       feedback = `<div class="q-feedback correct">✓ 正解です（正解: ${formatAnswer(q.correctAnswer)}）</div>`;
@@ -75,6 +218,7 @@ function renderQuestionBody(q) {
     ${subsHtml}
     ${choicesHtml}
     ${feedback}
+    ${explanationBlock}
     <details class="q-original"><summary>原文（OCR）を表示</summary><pre class="q-raw">${escapeHtml(q.text)}</pre></details>
   `;
 }
@@ -89,8 +233,9 @@ function formatAnswer(a) {
 function handleChoiceClick(btn) {
   const qid = btn.dataset.qid;
   const selected = btn.dataset.choice;
-  const q = bank.topics.flatMap((t) => t.questions).find((x) => x.id === qid);
+  let q = bank.topics.flatMap((t) => t.questions).find((x) => x.id === qid);
   if (!q) return;
+  q = ensureQuestionParsed({ ...q });
 
   const card = btn.closest(".question-card");
   const correctAnswer = q.correctAnswer;
@@ -103,7 +248,6 @@ function handleChoiceClick(btn) {
   saveAttempts();
 
   card.querySelectorAll(".choice-btn").forEach((b) => {
-    b.disabled = true;
     b.classList.remove("selected-correct", "selected-wrong", "is-answer");
     if (b.dataset.choice === selected) {
       b.classList.add(correct ? "selected-correct" : "selected-wrong");
@@ -129,10 +273,25 @@ function handleChoiceClick(btn) {
   if (!correctAnswer) {
     fb.className = "q-feedback neutral";
     fb.textContent = "正解データがありません。公式PDFで確認してください。";
-    card.querySelectorAll(".choice-btn").forEach((b) => {
-      b.disabled = false;
-    });
   }
+
+  showExplanationPanel(card, q);
+}
+
+function showExplanationPanel(card, q) {
+  if (!q.explanationHtml) return;
+  let panel = card.querySelector(".q-explanation");
+  if (!panel) {
+    panel = document.createElement("div");
+    panel.className = "q-explanation";
+    const body = card.querySelector(".q-body");
+    const details = body.querySelector(".q-original");
+    body.insertBefore(panel, details);
+  }
+  panel.innerHTML = q.explanationHtml;
+  panel.hidden = false;
+  panel.classList.add("visible");
+  panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 function escapeHtml(s) {
@@ -313,7 +472,7 @@ function renderTopic(topicId) {
     </div>
     <div class="panel">
       <h2>過去問一覧</h2>
-      <p class="quiz-hint">選択肢をタップすると正誤が表示されます。OCRの誤字は原文表示で確認してください。</p>
+      <p class="quiz-hint">選択肢をタップすると正誤と<strong>正解の理由（解説）</strong>が表示されます（何度でも選び直せます）。OCRの誤字は原文表示で確認してください。</p>
       <div class="question-filters">
         <label>年度 <select id="examFilter">
           <option value="">すべて</option>
@@ -392,18 +551,8 @@ function bindMainEvents(route) {
   document.querySelectorAll(".choice-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
-      if (!btn.disabled) handleChoiceClick(btn);
+      handleChoiceClick(btn);
     });
-  });
-
-  // 復習時: 既に回答済みはボタン無効化
-  document.querySelectorAll(".question-card").forEach((card) => {
-    const qid = card.dataset.qid;
-    if (attempts[qid]) {
-      card.querySelectorAll(".choice-btn").forEach((b) => {
-        b.disabled = true;
-      });
-    }
   });
 
   document.querySelectorAll("[data-check]").forEach((cb) => {

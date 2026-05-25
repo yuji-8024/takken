@@ -535,6 +535,70 @@ a {
   font-weight: 500;
 }
 
+/* 解説 */
+.q-explanation {
+  margin-top: 1rem;
+  padding: 1rem 1.15rem;
+  background: linear-gradient(180deg, #f0f9ff 0%, #f8fafc 100%);
+  border: 1px solid #bae6fd;
+  border-radius: var(--radius);
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+
+.q-explanation.visible {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.q-explanation h4 {
+  margin: 0.75rem 0 0.35rem;
+  font-size: 0.82rem;
+  color: #0369a1;
+  font-weight: 700;
+}
+
+.q-explanation h4:first-child {
+  margin-top: 0;
+}
+
+.q-explanation .exp-summary {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.q-explanation .exp-why p,
+.q-explanation .exp-why {
+  color: var(--text);
+}
+
+.q-explanation ul {
+  margin: 0.35rem 0 0.5rem;
+  padding-left: 1.2rem;
+}
+
+.q-explanation li {
+  margin-bottom: 0.35rem;
+}
+
+.q-explanation .exp-wrong {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.q-explanation .exp-note {
+  margin: 0.75rem 0 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: normal;
+}
+
 .q-original {
   margin-top: 0.5rem;
   font-size: 0.8rem;
