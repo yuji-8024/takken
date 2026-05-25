@@ -1,0 +1,1243 @@
+{
+  "meta": {
+    "total_questions": 560,
+    "cross_year_pairs": 143657,
+    "exam_years": {
+      "H28": 2016,
+      "H29": 2017,
+      "H30": 2018,
+      "R1": 2019,
+      "R2_10": 2020,
+      "R2_12": 2020,
+      "R3_10": 2021,
+      "R3_12": 2021,
+      "R4": 2022,
+      "R5": 2023,
+      "R6": 2024,
+      "R7": 2025
+    }
+  },
+  "threshold_analysis": [
+    {
+      "threshold": 0.5,
+      "pairs": 38,
+      "pct_of_all_pairs": 0.03,
+      "year_gap_mean": 3.61,
+      "year_gap_median": 3.0,
+      "year_gap_max": 9,
+      "pct_within_3yr": 52.6,
+      "pct_5yr_plus": 26.3
+    },
+    {
+      "threshold": 0.55,
+      "pairs": 23,
+      "pct_of_all_pairs": 0.02,
+      "year_gap_mean": 3.7,
+      "year_gap_median": 3,
+      "year_gap_max": 9,
+      "pct_within_3yr": 52.2,
+      "pct_5yr_plus": 30.4
+    },
+    {
+      "threshold": 0.6,
+      "pairs": 15,
+      "pct_of_all_pairs": 0.01,
+      "year_gap_mean": 3.6,
+      "year_gap_median": 3,
+      "year_gap_max": 9,
+      "pct_within_3yr": 53.3,
+      "pct_5yr_plus": 26.7
+    },
+    {
+      "threshold": 0.65,
+      "pairs": 12,
+      "pct_of_all_pairs": 0.01,
+      "year_gap_mean": 3.67,
+      "year_gap_median": 3.0,
+      "year_gap_max": 9,
+      "pct_within_3yr": 58.3,
+      "pct_5yr_plus": 25.0
+    },
+    {
+      "threshold": 0.7,
+      "pairs": 7,
+      "pct_of_all_pairs": 0.0,
+      "year_gap_mean": 4.86,
+      "year_gap_median": 4,
+      "year_gap_max": 9,
+      "pct_within_3yr": 28.6,
+      "pct_5yr_plus": 42.9
+    },
+    {
+      "threshold": 0.75,
+      "pairs": 4,
+      "pct_of_all_pairs": 0.0,
+      "year_gap_mean": 4.75,
+      "year_gap_median": 4.5,
+      "year_gap_max": 9,
+      "pct_within_3yr": 50.0,
+      "pct_5yr_plus": 50.0
+    },
+    {
+      "threshold": 0.8,
+      "pairs": 1,
+      "pct_of_all_pairs": 0.0,
+      "year_gap_mean": 9,
+      "year_gap_median": 9,
+      "year_gap_max": 9,
+      "pct_within_3yr": 0.0,
+      "pct_5yr_plus": 100.0
+    },
+    {
+      "threshold": 0.85,
+      "pairs": 1,
+      "pct_of_all_pairs": 0.0,
+      "year_gap_mean": 9,
+      "year_gap_median": 9,
+      "year_gap_max": 9,
+      "pct_within_3yr": 0.0,
+      "pct_5yr_plus": 100.0
+    }
+  ],
+  "threshold_recommendation": {
+    "template_like": ">= 0.80 (seq often >= 0.85): nearly same stem, wording swap",
+    "high_recurrence": ">= 0.70: strong reuse, study priority",
+    "moderate_similar": "0.60 - 0.70: same topic family, different numbers/facts",
+    "weak": "< 0.60: mostly independent (not counted as similar)"
+  },
+  "category_analysis": {
+    "権利関係": {
+      "question_count": 156,
+      "template_hit_questions": 94,
+      "template_hit_rate_pct": 60.3,
+      "top_templates": [
+        [
+          "民法_誤っているもの",
+          27
+        ],
+        [
+          "民法_正しいもの",
+          23
+        ],
+        [
+          "借地借家法",
+          19
+        ],
+        [
+          "区分所有法",
+          12
+        ],
+        [
+          "登記法",
+          12
+        ],
+        [
+          "抵当権パターン",
+          2
+        ],
+        [
+          "媒介契約",
+          1
+        ],
+        [
+          "都市計画法_一般",
+          1
+        ]
+      ],
+      "similar_pairs_score_ge_070": 1,
+      "similar_pairs_score_060_070": 0,
+      "year_gap_if_ge_070": {
+        "mean": 4,
+        "median": 4,
+        "distribution": {
+          "4": 1
+        }
+      },
+      "typical_recurrence_years": {
+        "1-2年": 0,
+        "3-4年": 1,
+        "5-7年": 0,
+        "8年以上": 0
+      }
+    },
+    "法令上の制限": {
+      "question_count": 88,
+      "template_hit_questions": 53,
+      "template_hit_rate_pct": 60.2,
+      "top_templates": [
+        [
+          "都市計画法_一般",
+          22
+        ],
+        [
+          "農地法",
+          12
+        ],
+        [
+          "建築基準法",
+          11
+        ],
+        [
+          "土地区画整理法",
+          8
+        ]
+      ],
+      "similar_pairs_score_ge_070": 3,
+      "similar_pairs_score_060_070": 3,
+      "year_gap_if_ge_070": {
+        "mean": 2.33,
+        "median": 2,
+        "distribution": {
+          "4": 1,
+          "1": 1,
+          "2": 1
+        }
+      },
+      "typical_recurrence_years": {
+        "1-2年": 2,
+        "3-4年": 1,
+        "5-7年": 0,
+        "8年以上": 0
+      }
+    },
+    "宅建業法": {
+      "question_count": 112,
+      "template_hit_questions": 29,
+      "template_hit_rate_pct": 25.9,
+      "top_templates": [
+        [
+          "媒介契約",
+          10
+        ],
+        [
+          "宅建業法_違反",
+          9
+        ],
+        [
+          "重要事項説明",
+          5
+        ],
+        [
+          "自ら売主_マンション",
+          4
+        ],
+        [
+          "クーリングオフ",
+          3
+        ],
+        [
+          "区分所有法",
+          2
+        ]
+      ],
+      "similar_pairs_score_ge_070": 1,
+      "similar_pairs_score_060_070": 0,
+      "year_gap_if_ge_070": {
+        "mean": 9,
+        "median": 9,
+        "distribution": {
+          "9": 1
+        }
+      },
+      "typical_recurrence_years": {
+        "1-2年": 0,
+        "3-4年": 0,
+        "5-7年": 0,
+        "8年以上": 1
+      }
+    },
+    "税・その他": {
+      "question_count": 67,
+      "template_hit_questions": 27,
+      "template_hit_rate_pct": 40.3,
+      "top_templates": [
+        [
+          "重要事項説明",
+          12
+        ],
+        [
+          "宅建業法_違反",
+          7
+        ],
+        [
+          "クーリングオフ",
+          4
+        ],
+        [
+          "媒介契約",
+          3
+        ],
+        [
+          "自ら売主_マンション",
+          1
+        ],
+        [
+          "区分所有法",
+          1
+        ]
+      ],
+      "similar_pairs_score_ge_070": 0,
+      "similar_pairs_score_060_070": 0,
+      "year_gap_if_ge_070": {},
+      "typical_recurrence_years": {
+        "1-2年": 0,
+        "3-4年": 0,
+        "5-7年": 0,
+        "8年以上": 0
+      }
+    },
+    "その他(39-45)": {
+      "question_count": 80,
+      "template_hit_questions": 26,
+      "template_hit_rate_pct": 32.5,
+      "top_templates": [
+        [
+          "重要事項説明",
+          8
+        ],
+        [
+          "クーリングオフ",
+          8
+        ],
+        [
+          "媒介契約",
+          5
+        ],
+        [
+          "宅建業法_違反",
+          5
+        ],
+        [
+          "自ら売主_マンション",
+          2
+        ],
+        [
+          "37条書面",
+          1
+        ]
+      ],
+      "similar_pairs_score_ge_070": 0,
+      "similar_pairs_score_060_070": 1,
+      "year_gap_if_ge_070": {},
+      "typical_recurrence_years": {
+        "1-2年": 0,
+        "3-4年": 0,
+        "5-7年": 0,
+        "8年以上": 0
+      }
+    },
+    "登録講習免除": {
+      "question_count": 57,
+      "template_hit_questions": 12,
+      "template_hit_rate_pct": 21.1,
+      "top_templates": [
+        [
+          "住宅金融支援機構",
+          12
+        ]
+      ],
+      "similar_pairs_score_ge_070": 1,
+      "similar_pairs_score_060_070": 3,
+      "year_gap_if_ge_070": {
+        "mean": 7,
+        "median": 7,
+        "distribution": {
+          "7": 1
+        }
+      },
+      "typical_recurrence_years": {
+        "1-2年": 0,
+        "3-4年": 0,
+        "5-7年": 1,
+        "8年以上": 0
+      }
+    }
+  },
+  "threshold_ge_070_by_category": {
+    "宅建業法": {
+      "pairs_ge_070": 1,
+      "mean_year_gap": 9,
+      "median_year_gap": 9
+    },
+    "登録講習免除": {
+      "pairs_ge_070": 1,
+      "mean_year_gap": 7,
+      "median_year_gap": 7
+    },
+    "法令上の制限": {
+      "pairs_ge_070": 3,
+      "mean_year_gap": 2.33,
+      "median_year_gap": 2
+    },
+    "権利関係": {
+      "pairs_ge_070": 1,
+      "mean_year_gap": 4,
+      "median_year_gap": 4
+    }
+  },
+  "named_template_timeline": [
+    {
+      "template": "民法_誤っているもの",
+      "occurrences": 27,
+      "exam_count": 12,
+      "first_year": 2016,
+      "last_year": 2025,
+      "year_span": 9,
+      "avg_gap_between_years": 1.0,
+      "years_active": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "template": "重要事項説明",
+      "occurrences": 25,
+      "exam_count": 12,
+      "first_year": 2016,
+      "last_year": 2025,
+      "year_span": 9,
+      "avg_gap_between_years": 1.0,
+      "years_active": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "template": "民法_正しいもの",
+      "occurrences": 23,
+      "exam_count": 10,
+      "first_year": 2016,
+      "last_year": 2025,
+      "year_span": 9,
+      "avg_gap_between_years": 1.1,
+      "years_active": [
+        2016,
+        2017,
+        2018,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "template": "都市計画法_一般",
+      "occurrences": 23,
+      "exam_count": 12,
+      "first_year": 2016,
+      "last_year": 2025,
+      "year_span": 9,
+      "avg_gap_between_years": 1.0,
+      "years_active": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "template": "宅建業法_違反",
+      "occurrences": 21,
+      "exam_count": 9,
+      "first_year": 2016,
+      "last_year": 2025,
+      "year_span": 9,
+      "avg_gap_between_years": 1.1,
+      "years_active": [
+        2016,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "template": "借地借家法",
+      "occurrences": 19,
+      "exam_count": 11,
+      "first_year": 2016,
+      "last_year": 2025,
+      "year_span": 9,
+      "avg_gap_between_years": 1.0,
+      "years_active": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "template": "媒介契約",
+      "occurrences": 19,
+      "exam_count": 12,
+      "first_year": 2016,
+      "last_year": 2025,
+      "year_span": 9,
+      "avg_gap_between_years": 1.0,
+      "years_active": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "template": "区分所有法",
+      "occurrences": 15,
+      "exam_count": 12,
+      "first_year": 2016,
+      "last_year": 2025,
+      "year_span": 9,
+      "avg_gap_between_years": 1.0,
+      "years_active": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "template": "クーリングオフ",
+      "occurrences": 15,
+      "exam_count": 11,
+      "first_year": 2016,
+      "last_year": 2025,
+      "year_span": 9,
+      "avg_gap_between_years": 1.1,
+      "years_active": [
+        2016,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "template": "登記法",
+      "occurrences": 12,
+      "exam_count": 12,
+      "first_year": 2016,
+      "last_year": 2025,
+      "year_span": 9,
+      "avg_gap_between_years": 1.0,
+      "years_active": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "template": "農地法",
+      "occurrences": 12,
+      "exam_count": 12,
+      "first_year": 2016,
+      "last_year": 2025,
+      "year_span": 9,
+      "avg_gap_between_years": 1.0,
+      "years_active": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "template": "住宅金融支援機構",
+      "occurrences": 12,
+      "exam_count": 12,
+      "first_year": 2016,
+      "last_year": 2025,
+      "year_span": 9,
+      "avg_gap_between_years": 1.0,
+      "years_active": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "template": "建築基準法",
+      "occurrences": 11,
+      "exam_count": 9,
+      "first_year": 2016,
+      "last_year": 2025,
+      "year_span": 9,
+      "avg_gap_between_years": 1.3,
+      "years_active": [
+        2016,
+        2017,
+        2019,
+        2020,
+        2021,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "template": "土地区画整理法",
+      "occurrences": 8,
+      "exam_count": 8,
+      "first_year": 2016,
+      "last_year": 2025,
+      "year_span": 9,
+      "avg_gap_between_years": 1.3,
+      "years_active": [
+        2016,
+        2017,
+        2019,
+        2020,
+        2021,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    {
+      "template": "自ら売主_マンション",
+      "occurrences": 7,
+      "exam_count": 5,
+      "first_year": 2016,
+      "last_year": 2025,
+      "year_span": 9,
+      "avg_gap_between_years": 2.2,
+      "years_active": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2025
+      ]
+    },
+    {
+      "template": "抵当権パターン",
+      "occurrences": 2,
+      "exam_count": 2,
+      "first_year": 2019,
+      "last_year": 2023,
+      "year_span": 4,
+      "avg_gap_between_years": 4.0,
+      "years_active": [
+        2019,
+        2023
+      ]
+    },
+    {
+      "template": "37条書面",
+      "occurrences": 1,
+      "exam_count": 1,
+      "first_year": 2021,
+      "last_year": 2021,
+      "year_span": 0,
+      "avg_gap_between_years": 0,
+      "years_active": [
+        2021
+      ]
+    }
+  ],
+  "opening_fingerprint_clusters": [
+    {
+      "opening_sample": "宅地建物取引業の免許(以下この問において「免許] という。) に関す る次の記 述のうち、宅地建物取引業法の規定によれば、正しいものはどれか。 1 個人である宅地建物取引業者A ( 甲県知事免許) が",
+      "count": 5,
+      "exams": [
+        "H28",
+        "R1",
+        "R5",
+        "R6",
+        "R7"
+      ],
+      "exam_labels": [
+        "平成28",
+        "令和元",
+        "令和5",
+        "令和6",
+        "令和7"
+      ],
+      "year_span": 9,
+      "categories": [
+        [
+          "税・その他",
+          2
+        ],
+        [
+          "その他(39-45)",
+          2
+        ],
+        [
+          "宅建業法",
+          1
+        ]
+      ],
+      "question_ids": [
+        "H28_Q35",
+        "R1_Q43",
+        "R5_Q29",
+        "R6_Q38",
+        "R7_Q41"
+      ]
+    },
+    {
+      "opening_sample": "独立行政法人住宅金融支援機構(以下この問において 「機構 ] という。) に関す る次の記述のうち、誤っているものはどれか。 1] 機構は、子どもを育成する家庭又は高齢者の家庭に適した良好な居住性能及",
+      "count": 2,
+      "exams": [
+        "H28",
+        "R5"
+      ],
+      "exam_labels": [
+        "平成28",
+        "令和5"
+      ],
+      "year_span": 7,
+      "categories": [
+        [
+          "登録講習免除",
+          2
+        ]
+      ],
+      "question_ids": [
+        "H28_Q46",
+        "R5_Q46"
+      ]
+    },
+    {
+      "opening_sample": "宅地建物取引業者が行う宅地建物取引業法第35 条に規定する重要事項の説明に 関する次の記述のうち、正しいものはどれか。なお、説明の相手方は宅地建物取引業者ではな いものとする。 「 ーー ] 既存住宅",
+      "count": 2,
+      "exams": [
+        "R1",
+        "R7"
+      ],
+      "exam_labels": [
+        "令和元",
+        "令和7"
+      ],
+      "year_span": 6,
+      "categories": [
+        [
+          "その他(39-45)",
+          1
+        ],
+        [
+          "税・その他",
+          1
+        ]
+      ],
+      "question_ids": [
+        "R1_Q39",
+        "R7_Q37"
+      ]
+    },
+    {
+      "opening_sample": "宅地造成等規制法に関する次の記述のうち、誤っているものはどれか。なお、 こ の問において「都道府県知事]」 とは、地方自治法に基づく指定都市、中核市及び施行時特例市 にあってはその長をいうものとする。",
+      "count": 3,
+      "exams": [
+        "H30",
+        "R2_10",
+        "R5"
+      ],
+      "exam_labels": [
+        "平成30",
+        "令和2(10月)",
+        "令和5"
+      ],
+      "year_span": 5,
+      "categories": [
+        [
+          "法令上の制限",
+          3
+        ]
+      ],
+      "question_ids": [
+        "H30_Q20",
+        "R2_10_Q19",
+        "R5_Q19"
+      ]
+    },
+    {
+      "opening_sample": "宅地建物取引業者Aが宅地建物取引業法第37 条の規定により交付すべき書面 . (以下 この問において「37 条書面] という。) に関する次の記述のうち、正しいゃのはどれか。 ・ 1 A が媒介により",
+      "count": 3,
+      "exams": [
+        "R2_10",
+        "R6",
+        "R7"
+      ],
+      "exam_labels": [
+        "令和2(10月)",
+        "令和6",
+        "令和7"
+      ],
+      "year_span": 5,
+      "categories": [
+        [
+          "税・その他",
+          1
+        ],
+        [
+          "その他(39-45)",
+          1
+        ],
+        [
+          "宅建業法",
+          1
+        ]
+      ],
+      "question_ids": [
+        "R2_10_Q33",
+        "R6_Q44",
+        "R7_Q29"
+      ]
+    },
+    {
+      "opening_sample": "独立行政法人住宅金融支援機構(以下この問において「機構] という。) に関す る次の記述のうち、誤っているものはどれか。 1 機構は、住宅の建設又は購入に必要な資金の貸付けに係る金融機関の貸付債権の譲",
+      "count": 2,
+      "exams": [
+        "H30",
+        "R4"
+      ],
+      "exam_labels": [
+        "平成30",
+        "令和4"
+      ],
+      "year_span": 4,
+      "categories": [
+        [
+          "登録講習免除",
+          2
+        ]
+      ],
+      "question_ids": [
+        "H30_Q46",
+        "R4_Q46"
+      ]
+    },
+    {
+      "opening_sample": "宅地建物取引業者が行う広告に関する次の記述のうち、不当景品類及び不当表示 防止法（不動産の表示に関する公正競争規約を含む。）の規定によれば、正しいものはどれか。 1 実際には取引する意思がない物件であ",
+      "count": 3,
+      "exams": [
+        "R5",
+        "R6",
+        "R7"
+      ],
+      "exam_labels": [
+        "令和5",
+        "令和6",
+        "令和7"
+      ],
+      "year_span": 2,
+      "categories": [
+        [
+          "登録講習免除",
+          3
+        ]
+      ],
+      "question_ids": [
+        "R5_Q47",
+        "R6_Q47",
+        "R7_Q47"
+      ]
+    },
+    {
+      "opening_sample": "都市計画法に関する次の記述のうち、正しいものはどれか。ただし、この問にお いて条例による特別の定めはないものとし、「都道府県知事」とは、地方自治法に基づく指定 都市、中核市及び施行時特例市にあってはそ",
+      "count": 2,
+      "exams": [
+        "R5",
+        "R7"
+      ],
+      "exam_labels": [
+        "令和5",
+        "令和7"
+      ],
+      "year_span": 2,
+      "categories": [
+        [
+          "法令上の制限",
+          2
+        ]
+      ],
+      "question_ids": [
+        "R5_Q16",
+        "R7_Q16"
+      ]
+    },
+    {
+      "opening_sample": "宅地填物取引業者が行う広告に関する次の記述のうち、不当景品頻及び不当表示 防止法(不動産の表示に関する公正競争規約を含む。) の規定 によれば、正 しいもゃのはどれ か。 1 土地を販売するに当たり、",
+      "count": 2,
+      "exams": [
+        "R1",
+        "R2_10"
+      ],
+      "exam_labels": [
+        "令和元",
+        "令和2(10月)"
+      ],
+      "year_span": 1,
+      "categories": [
+        [
+          "登録講習免除",
+          2
+        ]
+      ],
+      "question_ids": [
+        "R1_Q47",
+        "R2_10_Q47"
+      ]
+    },
+    {
+      "opening_sample": "宅地建物取引業者が行う広告に関する次の記述のうち、不当景品占及び不当表示 防止法(不動産の表示に関する公正競争規約を含む。) の規定によれば、正しいものはどれか。 1 新築 分譲マンションの販売広告に",
+      "count": 2,
+      "exams": [
+        "R3_12",
+        "R4"
+      ],
+      "exam_labels": [
+        "令和3(12月)",
+        "令和4"
+      ],
+      "year_span": 1,
+      "categories": [
+        [
+          "登録講習免除",
+          2
+        ]
+      ],
+      "question_ids": [
+        "R3_12_Q47",
+        "R4_Q47"
+      ]
+    },
+    {
+      "opening_sample": "宅地建物取引業者がその業務に関して行う広告に関する次の記述のうち、宅地建 物取引業法（以下この問において「法」という。）の規定によれば、正しいものはどれか。な お、この問において「建築確認」とは、建築",
+      "count": 2,
+      "exams": [
+        "R5",
+        "R6"
+      ],
+      "exam_labels": [
+        "令和5",
+        "令和6"
+      ],
+      "year_span": 1,
+      "categories": [
+        [
+          "宅建業法",
+          1
+        ],
+        [
+          "税・その他",
+          1
+        ]
+      ],
+      "question_ids": [
+        "R5_Q31",
+        "R6_Q33"
+      ]
+    },
+    {
+      "opening_sample": "宅地造成及び特定盛土等規制法に関する次の記述のうち、誤っているものはどれ か。なお、この問において「都道府県知事」とは、地方自治法に基づく指定都市及び中核市に あってはその長をいうものとし、地方自治法",
+      "count": 2,
+      "exams": [
+        "R6",
+        "R7"
+      ],
+      "exam_labels": [
+        "令和6",
+        "令和7"
+      ],
+      "year_span": 1,
+      "categories": [
+        [
+          "法令上の制限",
+          2
+        ]
+      ],
+      "question_ids": [
+        "R6_Q19",
+        "R7_Q19"
+      ]
+    },
+    {
+      "opening_sample": "宅地建物取引業者が行う宅地建物取引業法第35 条に規定する重要事項の説明に 関する次の記述のうち、正しいものはいくつあるか。なお、説明の相手方は宅地建物取引業者 ではないものとする。 ア 中古マンショ",
+      "count": 2,
+      "exams": [
+        "R6",
+        "R7"
+      ],
+      "exam_labels": [
+        "令和6",
+        "令和7"
+      ],
+      "year_span": 1,
+      "categories": [
+        [
+          "その他(39-45)",
+          2
+        ]
+      ],
+      "question_ids": [
+        "R6_Q41",
+        "R7_Q43"
+      ]
+    },
+    {
+      "opening_sample": "特定住宅瑕疵担保責任の履行の確保等に関する法律に基づく住宅販売瑕 か 疵 し 担保保 証金（以下この問において「保証金」という。）の供託又は住宅販売瑕 か 疵 し 担保責任保険契約 （以下この問におい",
+      "count": 2,
+      "exams": [
+        "R6",
+        "R7"
+      ],
+      "exam_labels": [
+        "令和6",
+        "令和7"
+      ],
+      "year_span": 1,
+      "categories": [
+        [
+          "その他(39-45)",
+          2
+        ]
+      ],
+      "question_ids": [
+        "R6_Q45",
+        "R7_Q45"
+      ]
+    },
+    {
+      "opening_sample": "宅地建物取引業保証協会(以下この問において 「保証協会 ] という。) に関する 次の記述のうち、宅地建物取引業法の規定によれば、誤っているものはどれか。 1 保証壇会は、当該保証協会の社員である宅地",
+      "count": 2,
+      "exams": [
+        "R3_10",
+        "R3_12"
+      ],
+      "exam_labels": [
+        "令和3(10月)",
+        "令和3(12月)"
+      ],
+      "year_span": 0,
+      "categories": [
+        [
+          "宅建業法",
+          1
+        ],
+        [
+          "その他(39-45)",
+          1
+        ]
+      ],
+      "question_ids": [
+        "R3_10_Q31",
+        "R3_12_Q39"
+      ]
+    }
+  ],
+  "top_pairs_by_category": {
+    "権利関係": [
+      {
+        "pair": [
+          "R1_Q10",
+          "R5_Q10"
+        ],
+        "labels": [
+          "令和元",
+          "令和5"
+        ],
+        "year_gap": 4,
+        "score": 0.708,
+        "seq": 0.907
+      }
+    ],
+    "法令上の制限": [
+      {
+        "pair": [
+          "R1_Q16",
+          "R3_10_Q16"
+        ],
+        "labels": [
+          "令和元",
+          "令和3(10月)"
+        ],
+        "year_gap": 2,
+        "score": 0.758,
+        "seq": 0.76
+      },
+      {
+        "pair": [
+          "R1_Q16",
+          "R2_12_Q16"
+        ],
+        "labels": [
+          "令和元",
+          "令和2(12月)"
+        ],
+        "year_gap": 1,
+        "score": 0.757,
+        "seq": 0.779
+      },
+      {
+        "pair": [
+          "H29_Q17",
+          "R3_10_Q16"
+        ],
+        "labels": [
+          "平成29",
+          "令和3(10月)"
+        ],
+        "year_gap": 4,
+        "score": 0.741,
+        "seq": 0.762
+      },
+      {
+        "pair": [
+          "R2_12_Q16",
+          "R3_10_Q16"
+        ],
+        "labels": [
+          "令和2(12月)",
+          "令和3(10月)"
+        ],
+        "year_gap": 1,
+        "score": 0.684,
+        "seq": 0.693
+      },
+      {
+        "pair": [
+          "H29_Q17",
+          "R1_Q16"
+        ],
+        "labels": [
+          "平成29",
+          "令和元"
+        ],
+        "year_gap": 2,
+        "score": 0.678,
+        "seq": 0.677
+      },
+      {
+        "pair": [
+          "H29_Q17",
+          "R2_12_Q16"
+        ],
+        "labels": [
+          "平成29",
+          "令和2(12月)"
+        ],
+        "year_gap": 3,
+        "score": 0.672,
+        "seq": 0.611
+      }
+    ],
+    "宅建業法": [
+      {
+        "pair": [
+          "H28_Q28",
+          "R7_Q32"
+        ],
+        "labels": [
+          "平成28",
+          "令和7"
+        ],
+        "year_gap": 9,
+        "score": 0.872,
+        "seq": 0.931
+      }
+    ],
+    "税・その他": [],
+    "その他(39-45)": [],
+    "登録講習免除": [
+      {
+        "pair": [
+          "H28_Q46",
+          "R5_Q46"
+        ],
+        "labels": [
+          "平成28",
+          "令和5"
+        ],
+        "year_gap": 7,
+        "score": 0.721,
+        "seq": 0.734
+      },
+      {
+        "pair": [
+          "H28_Q46",
+          "R1_Q46"
+        ],
+        "labels": [
+          "平成28",
+          "令和元"
+        ],
+        "year_gap": 3,
+        "score": 0.686,
+        "seq": 0.653
+      }
+    ]
+  }
+}

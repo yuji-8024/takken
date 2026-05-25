@@ -1,0 +1,6 @@
+data/pdfs/
+data/ocr_cache/
+# site/data/bank.json は Netlify ビルドで生成（コミット可）
+__pycache__/
+*.pyc
+.venv/
